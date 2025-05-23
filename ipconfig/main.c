@@ -44,6 +44,7 @@ int main(int argc, char* argv[]) {
     PIP_ADAPTER_MULTICAST_ADDRESS pMulticast = NULL;
     IP_ADAPTER_DNS_SERVER_ADDRESS* pDnServer = NULL;
     IP_ADAPTER_PREFIX* pPrefix = NULL;
+    PIP_ADAPTER_GATEWAY_ADDRESS pGateway = NULL;
 
     if (argc != 2) {
         printf(" usage: getadapteraddresses family\n");
@@ -149,7 +150,16 @@ int main(int argc, char* argv[]) {
             else
                 printf("\tNo Unicast Addresses\n");
 
-            // ZT - Subnet Mask - pGateway = pCurrAddresses->FirstGatewayAddress;
+            // ZT - Subnet Mask - 
+            pGateway = pCurrAddresses->FirstGatewayAddress;
+            if (pGateway != NULL) {
+                // Add code here
+                continue;
+            }
+            else {
+                // No gateways :(
+                printf("\tNo gateways identified.");
+            }
 
             // ZT - Default Gateway - pCurrAddresses -> FirstPrefix;
 
