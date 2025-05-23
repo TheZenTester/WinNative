@@ -18,14 +18,11 @@
 int main(int argc, char* argv[]) {
     printf("Hello from ripconfig!\n\n");
 
-    IP_ADAPTER_INFO* pAdapterInfo;
     ULONG            ulOutBufLen;
     DWORD            dwRetVal;
 
     printf("Starting GetAdaptersAddresses enumeration...\n");
     /* Declare and initialize variables */
-
-    //DWORD dwRetVal = 0;
 
     unsigned int i = 0;
 
@@ -111,8 +108,6 @@ int main(int argc, char* argv[]) {
             printf("\tConnection-specific DNS Suffix: %wS\n", pCurrAddresses->DnsSuffix);  //useful
 
             // ZT CODE
-            //struct sockaddr_in test_ipv4;
-            //struct sockaddr_in6 test_ipv6;
             pUnicast = pCurrAddresses->FirstUnicastAddress;
             if (pUnicast != NULL) {
                 for (i = 0; pUnicast != NULL; i++) {
@@ -153,6 +148,10 @@ int main(int argc, char* argv[]) {
             }
             else
                 printf("\tNo Unicast Addresses\n");
+
+            // ZT - Subnet Mask - pGateway = pCurrAddresses->FirstGatewayAddress;
+
+            // ZT - Default Gateway - pCurrAddresses -> FirstPrefix;
 
             pAnycast = pCurrAddresses->FirstAnycastAddress;
             if (pAnycast) {
