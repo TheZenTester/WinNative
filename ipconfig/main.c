@@ -154,7 +154,41 @@ int main(int argc, char* argv[]) {
             pGateway = pCurrAddresses->FirstGatewayAddress;
             if (pGateway != NULL) {
                 // Add code here
-                continue;
+                
+                for (int j = 0; pGateway != NULL; j++) {
+                    char ip_buffer[INET6_ADDRSTRLEN];
+                    void* lpSockaddr;
+                    const char* strIpAddr;
+                    ADDRESS_FAMILY sa_family;
+
+                    sa_family = pGateway->Address.lpSockaddr->sa_family;
+                    if (sa_family == AF_INET) {
+                        lpSockaddr = &((SOCKADDR_IN*)pGateway->Address.lpSockaddr)->sin_addr;
+                        strIpAddr = inet_ntop(sa_family, lpSockaddr, ip_buffer, sizeof(ip_buffer));
+                        if (strIpAddr != NULL) {
+                            printf("\t\tGateway address: %s\n", strIpAddr);
+                        }
+                        else {
+                            printf("\tAddress conversion failed\n");
+                        }
+                    }
+                    else if (sa_family == AF_INET6) {
+
+                        lpSockaddr = &((SOCKADDR_IN6*)pGateway->Address.lpSockaddr)->sin6_addr;
+                        strIpAddr = inet_ntop(sa_family, lpSockaddr, ip_buffer, sizeof(ip_buffer));
+                        if (strIpAddr != NULL) {
+                            printf("\t\tIPv6 Gateway Address: %s\n", strIpAddr);
+                        }
+                        else {
+                            printf("\tAddress conversion failed\n");
+                        }
+                    }
+                    else {
+                        break;
+                    }
+                    // end test
+                    pGateway = pGateway->Next;
+                }
             }
             else {
                 // No gateways :(
